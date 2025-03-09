@@ -1,16 +1,23 @@
 package app.web.dto;
 
 import app.model.ModerationStatus;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class ContentModerationResponse {
+    @NotNull
     private UUID id;
+    @NotNull
     private UUID postId;
+    @NotBlank
     private String content;
     private ModerationStatus status;
     private LocalDateTime createdOn;
     private String moderationReason;
+    @NotNull
     private UUID userId;
 
 
