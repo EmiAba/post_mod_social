@@ -29,11 +29,11 @@ public class ContentModeration {
     @Column(nullable = false)
     private UUID userId;
 
-    // Default constructor required by JPA
+
     public ContentModeration() {
     }
 
-    // Getters and Setters
+
     public UUID getId() {
         return id;
     }
