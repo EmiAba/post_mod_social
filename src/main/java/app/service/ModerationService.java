@@ -75,4 +75,8 @@ public class ModerationService {
     public List<ContentModeration> getPendingPosts() {
         return contentModerationRepository.findByStatus(ModerationStatus.PENDING);
     }
+
+    public List<ContentModeration> getModerationHistory() {
+        return contentModerationRepository.findAll();
+    }
 }

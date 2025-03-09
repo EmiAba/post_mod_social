@@ -23,13 +23,13 @@ public class ModerationController {
     private final ModerationService moderationService;
     private final ContentModerationMapper mapper;
 
-    private final ContentModerationRepository  contentModerationRepository;
+
 
     @Autowired
-    public ModerationController(ModerationService moderationService, ContentModerationMapper mapper, ContentModerationRepository contentModerationRepository) {
+    public ModerationController(ModerationService moderationService, ContentModerationMapper mapper) {
         this.moderationService = moderationService;
         this.mapper = mapper;
-        this.contentModerationRepository = contentModerationRepository;
+
     }
 
     @PostMapping("/posts")
@@ -42,7 +42,7 @@ public class ModerationController {
 
     @PostMapping("/moderate")
     public ResponseEntity<ContentModerationResponse> moderatePost(@RequestBody ModerationDecisionRequest request) {
-        System.out.println("Received moderation request: postId=" + request.getPostId() + ", approved=" + request.isApproved());
+
         ContentModeration post = moderationService.moderatePost(request);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -89,10 +89,7 @@ public class ModerationController {
                 .body(posts);
     }
 
-    @GetMapping("/test")
-    public ResponseEntity<String> testEndpoint() {
-        return ResponseEntity.ok("Post moderation service is running!");
-    }
+
 
     @PostMapping("/update/{postId}")
     public ResponseEntity<ContentModerationResponse> updatePost(
@@ -110,8 +107,9 @@ public class ModerationController {
 
     @GetMapping("/posts/history")
     public ResponseEntity<List<ContentModerationResponse>> getAllModerationHistory() {
-        List<ContentModeration> allPosts = contentModerationRepository.findAll();
-        List<ContentModerationResponse> responses = allPosts.stream()
+        List<ContentModeration> moderationHistory = moderationService.getModerationHistory();
+
+        List<ContentModerationResponse> responses = moderationHistory.stream()
                 .map(mapper::toResponse)
                 .collect(Collectors.toList());
 
