@@ -14,7 +14,9 @@ public class ContentModerationResponse {
     private UUID postId;
     @NotBlank
     private String content;
+    @NotNull
     private ModerationStatus status;
+    @NotNull
     private LocalDateTime createdOn;
     private String moderationReason;
     @NotNull
