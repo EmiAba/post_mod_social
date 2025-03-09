@@ -1,0 +1,88 @@
+package app.web.dto;
+
+import app.model.ModerationStatus;
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+public class ContentModerationResponse {
+    private UUID id;
+    private UUID postId;
+    private String content;
+    private ModerationStatus status;
+    private LocalDateTime createdOn;
+    private String moderationReason;
+    private UUID userId;
+
+
+    public ContentModerationResponse() {
+    }
+
+
+    public ContentModerationResponse(UUID id, UUID postId, String content,
+                                     ModerationStatus status, LocalDateTime createdOn,
+                                     String moderationReason, UUID userId) {
+        this.id = id;
+        this.postId = postId;
+        this.content = content;
+        this.status = status;
+        this.createdOn = createdOn;
+        this.moderationReason = moderationReason;
+        this.userId = userId;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public UUID getPostId() {
+        return postId;
+    }
+
+    public void setPostId(UUID postId) {
+        this.postId = postId;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public ModerationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ModerationStatus status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(LocalDateTime createdOn) {
+        this.createdOn = createdOn;
+    }
+
+    public String getModerationReason() {
+        return moderationReason;
+    }
+
+    public void setModerationReason(String moderationReason) {
+        this.moderationReason = moderationReason;
+    }
+
+    public UUID getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UUID userId) {
+        this.userId = userId;
+    }
+}
