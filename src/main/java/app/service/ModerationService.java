@@ -45,7 +45,7 @@ public class ModerationService {
     }
 
     public ContentModeration moderatePost(ModerationDecisionRequest request) {
-        // FIX: Look up by postId instead of ID
+
         ContentModeration post = contentModerationRepository.findByPostId(request.getPostId())
                 .orElseThrow(() -> new RuntimeException("Moderation for post ID " + request.getPostId() + " not found"));
 
