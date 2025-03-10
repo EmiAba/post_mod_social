@@ -8,18 +8,18 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class ContentModerationResponse {
-    @NotNull
+
     private UUID id;
-    @NotNull
+
     private UUID postId;
-    @NotBlank
+
     private String content;
-    @NotNull
+
     private ModerationStatus status;
-    @NotNull
+
     private LocalDateTime createdOn;
     private String moderationReason;
-    @NotNull
+
     private UUID userId;
 
 

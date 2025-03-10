@@ -4,6 +4,7 @@ import app.model.ContentModeration;
 import app.model.ModerationStatus;
 import app.repository.ContentModerationRepository;
 import app.web.dto.ContentModerationRequest;
+import app.web.dto.ContentModerationResponse;
 import app.web.dto.ModerationDecisionRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class ModerationService {
@@ -23,7 +25,27 @@ public class ModerationService {
         this.contentModerationRepository = contentModerationRepository;
     }
 
-    public ContentModeration submitPostForModeration(ContentModerationRequest request) {
+    // Method to convert entity to response
+    private ContentModerationResponse convertToResponse(ContentModeration entity) {
+        if (entity == null) {
+            return null;
+        }
+
+        ContentModerationResponse response = new ContentModerationResponse();
+        response.setId(entity.getId());
+        response.setPostId(entity.getPostId());
+        response.setContent(entity.getContent());
+        response.setStatus(entity.getStatus());
+        response.setCreatedOn(entity.getCreatedOn());
+        response.setModerationReason(entity.getModerationReason());
+        response.setUserId(entity.getUserId());
+
+        return response;
+    }
+
+    // Updated methods to return response DTOs instead of entities
+
+    public ContentModerationResponse submitPostForModeration(ContentModerationRequest request) {
         List<String> inappropriateWords = Arrays.asList(
                 "offensive", "inappropriate", "hate",
                 "violent", "racist"
@@ -41,11 +63,11 @@ public class ModerationService {
         post.setCreatedOn(LocalDateTime.now());
         post.setStatus(potentiallyInappropriate ? ModerationStatus.PENDING : ModerationStatus.APPROVED);
 
-        return contentModerationRepository.save(post);
+        ContentModeration savedPost = contentModerationRepository.save(post);
+        return convertToResponse(savedPost);
     }
 
-    public ContentModeration moderatePost(ModerationDecisionRequest request) {
-
+    public ContentModerationResponse moderatePost(ModerationDecisionRequest request) {
         ContentModeration post = contentModerationRepository.findByPostId(request.getPostId())
                 .orElseThrow(() -> new RuntimeException("Moderation for post ID " + request.getPostId() + " not found"));
 
@@ -55,22 +77,27 @@ public class ModerationService {
             post.setModerationReason(request.getReason());
         }
 
-        return contentModerationRepository.save(post);
+        ContentModeration savedPost = contentModerationRepository.save(post);
+        return convertToResponse(savedPost);
     }
 
-
-
-    public ContentModeration getPostByOriginalId(UUID postId) {
-        return contentModerationRepository.findByPostId(postId)
+    public ContentModerationResponse getPostByOriginalId(UUID postId) {
+        ContentModeration post = contentModerationRepository.findByPostId(postId)
                 .orElseThrow(() -> new RuntimeException("Moderation for post ID " + postId + " not found"));
+        return convertToResponse(post);
     }
 
-
-    public List<ContentModeration> getPendingPosts() {
-        return contentModerationRepository.findByStatus(ModerationStatus.PENDING);
+    public List<ContentModerationResponse> getPendingPosts() {
+        List<ContentModeration> pendingPosts = contentModerationRepository.findByStatus(ModerationStatus.PENDING);
+        return pendingPosts.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
     }
 
-    public List<ContentModeration> getModerationHistory() {
-        return contentModerationRepository.findAll();
+    public List<ContentModerationResponse> getModerationHistory() {
+        List<ContentModeration> moderationHistory = contentModerationRepository.findAll();
+        return moderationHistory.stream()
+                .map(this::convertToResponse)
+                .collect(Collectors.toList());
     }
 }
