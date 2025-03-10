@@ -58,19 +58,13 @@ public class ModerationService {
         return contentModerationRepository.save(post);
     }
 
-    public ContentModeration getPost(UUID postId) {
-        return contentModerationRepository.findById(postId)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
-    }
+
 
     public ContentModeration getPostByOriginalId(UUID postId) {
         return contentModerationRepository.findByPostId(postId)
                 .orElseThrow(() -> new RuntimeException("Moderation for post ID " + postId + " not found"));
     }
 
-    public List<ContentModeration> getUserPosts(UUID userId) {
-        return contentModerationRepository.findByUserId(userId);
-    }
 
     public List<ContentModeration> getPendingPosts() {
         return contentModerationRepository.findByStatus(ModerationStatus.PENDING);
