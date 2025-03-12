@@ -25,7 +25,7 @@ public class ModerationService {
         this.contentModerationRepository = contentModerationRepository;
     }
 
-    // Method to convert entity to response
+
     private ContentModerationResponse convertToResponse(ContentModeration entity) {
         if (entity == null) {
             return null;
@@ -43,7 +43,7 @@ public class ModerationService {
         return response;
     }
 
-    // Updated methods to return response DTOs instead of entities
+
 
     public ContentModerationResponse submitPostForModeration(ContentModerationRequest request) {
         List<String> inappropriateWords = Arrays.asList(

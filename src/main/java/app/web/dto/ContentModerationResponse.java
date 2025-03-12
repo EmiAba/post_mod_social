@@ -19,7 +19,7 @@ public class ContentModerationResponse {
 
     private LocalDateTime createdOn;
     private String moderationReason;
-
+    @NotNull
     private UUID userId;
 
 
